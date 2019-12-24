@@ -3,3 +3,5 @@
 Here are my contributions to [#TidyTuesday](https://github.com/rfordatascience/tidytuesday), a weekly data wrangling/visualization challenge with real-world data sets. 
 
 Unless otherwise noted, analysis was completed within the week of the challenge. 
+
+## 2019-52: Naughty & Nice: Most Commonly Occuring Positive/Negative Words in Top 100 Christmas Songs
