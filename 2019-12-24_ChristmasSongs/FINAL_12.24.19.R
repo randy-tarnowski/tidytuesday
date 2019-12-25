@@ -1,35 +1,38 @@
-##Tidy Tuesday
-# 
-# Christmas Music Billboards
-# This week's data is about Christmas songs on the hot-100 list! Clean data comes from Kaggle and originally from data.world.
-# 
-# The lyrics come courtest of Josiah Parry's genius R package.
-#It has several useful functions, mainly built around grabbing lyrics for specific artists, songs, or albums.
+#12/24/19 - Christmas Songs Cleaning and Analysis
+##Sentiment Analysis (most commonly occuring positive and negative words)
+
+#Inspired by https://github.com/ewenme/geniusr
+
+##Step 1: Cleaning
+##Provided data does not contain all lyrics
 library(SentimentAnalysis)
 library(ggplot2)
 library(tidyverse)
 library(genius)
 library(purrr)
-genius_token() #ZPt5IdZpPpnk_ga5ac5JH8iaPyVtEkrUI3kMhzNphG-yKavGOX5goK3ZnP0uVXZf
+library(purrr)
+library(ggplot2)
+library(syuzhet)
+library(tidytext)
+library(genius)
+library(textdata)
+library(syuzhet)
+
 
 #PULL DATA
 christmas_songs <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-12-24/christmas_songs.csv")
-christmas_lyrics <- readr::read_tsv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-12-24/christmas_lyrics.tsv")
-
-#Adjust Title of Christmas Songs
-christmas_songs$song<-str_to_title(christmas_songs$song)
 
 #Condense down to run actual lyrics search
 agg <- christmas_songs %>%
   group_by(songid, song, performer)%>%
   summarise(n=n())
 
-###Pulls songs that have
+###Pulls songs that have genius lyrics that were not already provided
 for (i in 1:length(agg$songid)){
   print(agg[i,2])
   q<-possible_lyrics(artist = paste(agg[i,3]), song = paste(agg[i,2]))
   agg[i,5]<-paste(unlist(q$lyric), collapse =" ") 
-  }
+}
 
 
 ##Add non-genius lyrics
@@ -49,12 +52,92 @@ agg<-agg%>%
                        as.character(lyrics)))
 
 
-#remove instrumental from those that are instrumentals
-##add lyrics to those that were not found
+# Getting the sentiment value for the lyrics
+agg$lyrics<-as.character(agg$lyrics)
+agg<-agg%>%
+  mutate(found_L1=ifelse(lyrics=="", "No", "Yes"), 
+         lyrics=ifelse(performer=="Kenny G", "", lyrics), 
+         lyrics=ifelse(lyrics=="Instrumental", "", lyrics),
+         instrumental=ifelse(songid=="Auld Lang SyneKenny G", "Yes"))
+
+agg_notfound<-agg%>%
+  filter(lyrics=="")%>%
+  #Removing instrumentals
+  filter(performer!="Kenny G",
+         song!="My Favorite Things",
+         performer!="Santo & Johnny")
 
 
+#add urls to complete additional lyrics
+agg_notfound$URL<-c("https://genius.com/The-killers-a-great-big-sled-lyrics",
+                    "https://genius.com/Burl-ives-have-a-holly-jolly-christmas-lyrics",
+                    "https://genius.com/Elvis-presley-blue-christmas-lyrics",
+                    "https://genius.com/Bobby-helms-jingle-bell-rock-lyrics",
+                    "https://genius.com/Bobby-boris-pickett-monsters-holiday-lyrics",
+                    "https://genius.com/Alvin-and-the-chipmunks-the-chipmunk-song-christmas-dont-be-late-lyrics",
+                    "https://genius.com/The-chad-mitchell-trio-marvelous-toy-lyrics",
+                    "https://genius.com/98-this-gift-lyrics",
+                    "https://genius.com/The-drifters-white-christmas-lyrics")
 
-write.csv(agg, "christmaslyrics.csv")
+###Uses URLs to input missing lyrics
+for (i in 1:length(agg_notfound$songid)){
+  print(agg_notfound[i,2])
+  q<-genius_url(paste(agg_notfound[i,"URL"]))
+  agg_notfound[i,"lyrics"]<-paste(unlist(q$lyric), collapse =" ") 
+}
+
+##merge back in lyrics
+agg<-agg%>%
+  mutate(lyrics=ifelse(songid %in% agg_notfound$songid, agg_notfound$lyrics, lyrics))
+
+
+##Step 2: Sentiment Analysis
+# set lexicon
+bing <- get_sentiments("bing")
+
+lyrics<-agg%>%
+  select(-1:-4)%>%
+  rename(totalsent=sentiment)
+
+lyrics$lyrics<-as.character(lyrics$lyrics)
+
+# counting negative / positive words
+sentiment <-lyrics%>%
+  unnest_tokens(word, lyrics) %>% 
+  # remove stop words
+  anti_join(stop_words) %>%
+  # join afinn score
+  inner_join(bing) %>%
+  # count negative / positive words
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup() %>%
+  # lots of "bums" thanks to glee. also, censor "shit" and "bitch"
+  filter(word!="bum")%>%
+  mutate(word=ifelse(word=="bitch", "b****h", word),
+         word=ifelse(word=="shit", "s**t", word))
+
+sentiment$word<-stringr::str_to_sentence(sentiment$word)
+
+# FINAL PLOT
+sentiment %>%
+  group_by(sentiment) %>%
+  top_n(15) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(alpha = 0.8, show.legend = FALSE,  colour="white", stat="identity") +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(y = "Source: Billboard Top 100 (1958-2017, A Dash of Data) \n Randy Tarnowski | @randytarnowski",
+       x = NULL,
+       title="Naughty & Nice: Most Commonly Occurring Positive/Negative Words in Top 100 Christmas Songs",
+       subtitle = "From the Bing/Minqing lexicon") +
+  coord_flip() +
+  theme_ipsum_rc() + 
+  scale_fill_manual(values = c("red", "seagreen")) + 
+  theme(axis.text.y=element_text(size=rel(1.25))) +
+  theme(plot.subtitle = element_text(face = "italic")) 
+
+
 
 
 
