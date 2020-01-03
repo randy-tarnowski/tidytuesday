@@ -1,10 +1,10 @@
-# Contributions to #tidytuesday
+# 2020: The Road to 52
 Below are my contributions to [#TidyTuesday](https://github.com/rfordatascience/tidytuesday), a weekly data wrangling/visualization challenge with real-world data sets. 
 
-## 2020: The Road to 52
 One of my **2020 Resolutions** is to complete all 52 #TidyTuesdays. Ground rules are as follows:
 * While I'll shoot to complete each visualization the week it is released, 
 * Each dataset should have a ```clean code```, ```quality visualization```, and ```accompanying Twitter post```. 
+* Inspiration comes from the #TidyTuesday community, specifically [Thomas Mock](https://twitter.com/thomas_mock) for having started it all, [Jake Kaupp](https://twitter.com/jakekaupp), who knocked out all 52 in 2019, and [Julia Watzek](https://twitter.com/watzoever) for just having fantastic graphics.
 
 
 ### *Progress*
