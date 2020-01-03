@@ -2,7 +2,7 @@
 Below are my contributions to [#TidyTuesday](https://github.com/rfordatascience/tidytuesday), a weekly data wrangling/visualization challenge with real-world data sets. 
 
 One of my **2020 Resolutions** is to complete all 52 #TidyTuesdays. Ground rules are as follows:
-* Each dataset should have ```clean R script file```, ```quality visualization```, and ```accompanying Twitter post```. I see this as a "palate cleanser" from my daily data work and a great way to quickly explore new techniques and visualization tools with a short turnaround. 
+* Each dataset should have a ```clean R script file```, ```quality visualization```, and ```accompanying Twitter post```. I see this as a "palate cleanser" from my daily data work and a great way to quickly explore new techniques and visualization tools with a short turnaround. 
 * While I'll shoot to complete each visualization the week it is released, I imagine there will be some catch-up weeks due to work/life
 * Inspiration comes from the [#TidyTuesday](https://twitter.com/search?q=%23TidyTuesday&src=typeahead_click) community, specifically [Thomas Mock](https://twitter.com/thomas_mock) for having started it all, [Jake Kaupp](https://twitter.com/jakekaupp) for completing all 52 weeks in 2019, and [Julia Watzek](https://twitter.com/watzoever) for just having fantastic graphics
 
