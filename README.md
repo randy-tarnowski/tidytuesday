@@ -3,7 +3,7 @@ Below are my contributions to [#TidyTuesday](https://github.com/rfordatascience/
 
 ## Ground Rules
 * **Deliverables** :envelope: - Each dataset should have a ```clean R file```, ```quality visualization```, and ```accompanying Twitter post```. I see this as a "palate cleanser" from my daily data work and a great way to explore new techniques and visualization tools in R within a short timeframe. 
-* **Timeline** :watch: - While I'll shoot to complete each visualization the week it is released, I imagine there will be some catch-up weeks due to work/life
+* **Timeline** :watch: - While I'll shoot to complete each visualization the week it is released, work/life will take priority. Given this, catch-up weeks will be totally acceptable
 * **Bonus Points** :white_check_mark: - If time allows, I will aim to make a blog post ([like this](https://randy-tarnowski.github.io/post/tt_201952/)) walking through my analysis. Hopefully I'll have around one per month when all is said and done
 * **Inspiration** :star2: - Inspiration comes from the [#TidyTuesday](https://twitter.com/search?q=%23TidyTuesday&src=typeahead_click) community, specifically [Thomas Mock](https://twitter.com/thomas_mock) for having started it all, [Jake Kaupp](https://twitter.com/jakekaupp) for completing all 52 weeks in 2019, and [Julia Watzek](https://twitter.com/watzoever) for just having fantastic graphics
 
