@@ -16,6 +16,6 @@ Below are my contributions to [#TidyTuesday](https://github.com/rfordatascience/
 ---
 # Visualizations and Code
 
-## 2019-52: Naughty & Nice: Most Commonly Occuring Positive/Negative Words in Top 100 Christmas Songs
+## 2020-01 Naughty & Nice: Most Commonly Occuring Positive/Negative Words in Top 100 Christmas Songs (2019-52)
 ![alt text](https://raw.githubusercontent.com/randy-tarnowski/tidytuesday/master/2019-12-24_ChristmasSongs/12_24.png)
 Code: [Github Folder](https://github.com/randy-tarnowski/tidytuesday/tree/master/2019-12-24_ChristmasSongs)
